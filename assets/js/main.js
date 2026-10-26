@@ -24,7 +24,7 @@
     "stats.tiktokViews": "TikTok views · 60 days",
     "stats.tiktokEng": "TikTok engagement",
     "stats.igViews": "Instagram views · 90 days",
-    "stats.igReach": "reach among non-followers",
+    "stats.belgium": "audience in Belgium",
 
     "about.caption": "Mom · account manager · creator",
     "about.eyebrow": "(01) Nice to meet you",
@@ -38,11 +38,22 @@
     "values.4": "Attention to detail",
     "values.5": "Relatable, with a premium finish",
 
+    "gallery.eyebrow": "Two sides of me",
+    "gallery.quote": "The ambitious, professional creator <em>and</em> the spontaneous, expressive woman behind the camera.",
+    "gallery.c1": "Professional",
+    "gallery.c2": "Creative",
+    "gallery.c3": "Expressive",
+    "gallery.c4": "Spontaneous",
+
     "portfolio.eyebrow": "(02) Selected work",
     "portfolio.title": "Content that <em>sticks</em>",
-    "portfolio.intro": "A selection of UGC videos, Reels and TikToks for brands in food, beauty, lifestyle and motherhood. Tap a video to play it.",
+    "portfolio.intro": "A selection of UGC videos, Reels and TikToks for brands in food, beauty, family, fitness and lifestyle. Tap a video to play it.",
     "filter.all": "All",
     "portfolio.foodNote": "<span>Fun fact</span> My food content — think juicy meat and grill visuals — performs remarkably well with a male audience.",
+
+    "brands.eyebrow": "Trusted by",
+    "brands.title": "Brands I've <em>worked with</em>",
+    "brands.count": "brands & businesses",
 
     "services.eyebrow": "(03) Services",
     "services.title": "Rates <em>&amp;</em> offer",
@@ -93,11 +104,24 @@
     "statsSec.eyebrow": "(05) Statistics",
     "statsSec.title": "Reach that goes <em>further</em>",
     "s.followers": "Followers",
-    "s.views60": "Views · 60 days",
-    "s.views90": "Views · 90 days",
+    "s.ttPeriod": "Last 60 days · 26 Aug – 24 Oct",
+    "s.igPeriod": "Last 90 days",
+    "s.views": "Views",
+    "s.viewers": "Viewers",
+    "s.newViewers": "New viewers",
     "s.eng": "Engagement rate",
-    "s.unique": "Unique viewers",
-    "s.nonfollow": "Non-follower reach",
+    "s.nonfollow": "Views from non-followers",
+    "s.audience": "My audience",
+    "s.audienceSrc": "TikTok viewers · 26 Aug – 24 Oct",
+    "s.gender": "Gender",
+    "s.female": "Female",
+    "s.male": "Male",
+    "s.otherGender": "Other",
+    "s.age": "Age",
+    "s.location": "Location",
+    "s.be": "Belgium",
+    "s.nl": "Netherlands",
+    "s.otherLoc": "Other",
 
     "contact.eyebrow": "(06) Contact",
     "contact.title": "Let's create something <em>beautiful</em>.",
@@ -170,6 +194,8 @@
   const grid = $("#portfolioGrid");
   const items = window.PORTFOLIO || [];
   const playIcon = '<svg viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z"/></svg>';
+  const CATS = { food: "Food", beauty: "Beauty & fashion", family: "Family & kids", fitness: "Fitness & health", lifestyle: "Lifestyle" };
+  const catLabel = it => (CATS[it.category] || it.category) + " · " + it.format;
 
   items.forEach((it, i) => {
     const btn = document.createElement("button");
@@ -179,10 +205,14 @@
     btn.dataset.index = i;
     btn.style.animationDelay = (i % 5) * 60 + "ms";
     btn.setAttribute("aria-label", it.brand + " — " + it.format);
+    // no poster: a typographic cover with the brand name
+    const cover = it.poster
+      ? '<img src="' + it.poster + '" alt="" loading="lazy">'
+      : '<span class="card-blank" aria-hidden="true"><em>' + it.brand + "</em></span>";
     btn.innerHTML =
-      '<img src="' + it.poster + '" alt="" loading="lazy">' +
+      cover +
       '<span class="card-play">' + playIcon + "</span>" +
-      '<span class="card-meta"><small>' + it.category + " · " + it.format + "</small><strong>" + it.brand + "</strong></span>";
+      '<span class="card-meta"><small>' + catLabel(it) + "</small><strong>" + it.brand + "</strong></span>";
     btn.addEventListener("click", () => openLightbox(it, btn));
     grid.appendChild(btn);
   });
@@ -197,6 +227,19 @@
       if (show) { c.style.animation = "none"; void c.offsetWidth; c.style.animation = ""; c.style.animationDelay = (n++ % 5) * 60 + "ms"; }
     });
   }));
+
+  /* ---------- Brands ---------- */
+  const brands = window.BRANDS || [];
+  brands.filter(b => b.featured).forEach(b => {
+    const li = document.createElement("li");
+    li.innerHTML = b.logo ? '<img src="' + b.logo + '" alt="' + b.name + '" loading="lazy">' : "<span>" + b.name + "</span>";
+    $("#brandLogos").appendChild(li);
+  });
+  $("#brandList").innerHTML = brands
+    .map(b => b.name)
+    .sort((a, b) => a.localeCompare(b, "nl", { sensitivity: "base" }))
+    .map(n => "<li>" + n + "</li>").join("");
+  $("#brandCount").textContent = brands.length;
 
   /* ---------- Lightbox (mp4, TikTok, Instagram, or image) ---------- */
   const lb = $("#lightbox"), stage = $("#lightboxStage"), meta = $("#lightboxMeta");
@@ -231,7 +274,7 @@
       stage.appendChild(img);
       note = UI[lang].soon;
     }
-    meta.innerHTML = "<strong>" + it.brand + "</strong>" + it.category + " · " + it.format + (note ? "<br><em>" + note + "</em>" : "");
+    meta.innerHTML = "<strong>" + it.brand + "</strong>" + catLabel(it) + (note ? "<br><em>" + note + "</em>" : "");
     lb.hidden = false;
     document.body.style.overflow = "hidden";
     $("#lightboxClose").focus();
