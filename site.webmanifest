@@ -1,0 +1,16 @@
+{
+  "name": "Emmy Luna — UGC & lifestyle content creator",
+  "short_name": "Emmy Luna",
+  "description": "Portfolio en tarieven van Emmy Luna, UGC- en lifestyle content creator uit België.",
+  "lang": "nl-BE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#F8F5F0",
+  "theme_color": "#F8F5F0",
+  "icons": [
+    { "src": "/assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
