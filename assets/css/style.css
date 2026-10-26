@@ -390,6 +390,8 @@ em { font-style: italic; }
 .footer-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; max-width: var(--max); margin: 0 auto; padding-top: 24px; border-top: 1px solid rgba(231,220,207,.16); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
 .footer-row a { text-decoration: none; }
 .footer-row a:hover { color: var(--gold); }
+.footer-credit strong { font-weight: 600; color: var(--ivory); transition: color .3s var(--ease); }
+.footer-credit:hover strong { color: var(--gold); }
 
 /* ---------- Lightbox ---------- */
 .lightbox {
