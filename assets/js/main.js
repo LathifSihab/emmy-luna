@@ -156,8 +156,15 @@
     nav.classList.toggle("is-open", open);
     document.body.style.overflow = open ? "hidden" : "";
   };
-  toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+  const menuOpen = () => toggle.getAttribute("aria-expanded") === "true";
+  toggle.addEventListener("click", () => setMenu(!menuOpen()));
   $$("a", nav).forEach(a => a.addEventListener("click", () => setMenu(false)));
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && menuOpen()) { setMenu(false); toggle.focus(); }
+  });
+  // leaving the mobile breakpoint with the menu open would leave the page scroll-locked
+  const desktop = window.matchMedia("(min-width: 901px)");
+  desktop.addEventListener("change", e => { if (e.matches && menuOpen()) setMenu(false); });
 
   /* ---------- Portfolio ---------- */
   const grid = $("#portfolioGrid");
