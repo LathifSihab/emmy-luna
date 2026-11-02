@@ -136,6 +136,8 @@
     "form.opt4": "Something else",
     "form.msg": "Tell me about your idea",
     "form.send": "Send request",
+    "footer.privacy": "Privacy",
+    "footer.terms": "Terms",
     "footer.top": "Back to top ↑"
   };
 
@@ -166,6 +168,16 @@
   }
 
   $$(".lang-btn").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+
+  // live-stats.js swaps in labels after load; register both languages so switching keeps them
+  window.elI18n = {
+    set(el, key, nl, en) {
+      NL[key] = nl;
+      EN[key] = en;
+      el.dataset.i18n = key;
+      el.textContent = lang === "en" ? en : nl;
+    }
+  };
 
   /* ---------- Header + mobile menu ---------- */
   const header = $(".site-header");
@@ -305,10 +317,11 @@
 
   /* ---------- Reveal on scroll + counters ---------- */
   const countUp = el => {
-    const target = parseFloat(el.dataset.count), suffix = el.dataset.suffix || "";
-    const dec = (el.dataset.count.split(".")[1] || "").length;
     const t0 = performance.now(), dur = 1600;
     const tick = now => {
+      // read the target every frame: live-stats.js may update it mid-animation
+      const target = parseFloat(el.dataset.count), suffix = el.dataset.suffix || "";
+      const dec = (el.dataset.count.split(".")[1] || "").length;
       const p = Math.min((now - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
       el.textContent = (target * e).toFixed(dec) + suffix;
       if (p < 1) requestAnimationFrame(tick);

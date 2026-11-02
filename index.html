@@ -238,9 +238,9 @@
   </div>
 
   <ul class="hero-stats" aria-label="Kerncijfers">
-    <li><strong data-count="102" data-suffix="K">102K</strong><span data-i18n="stats.igViews">Instagram weergaven · 90 dagen</span></li>
-    <li><strong data-count="45.9" data-suffix="K">45.9K</strong><span data-i18n="stats.tiktokViews">TikTok views · 60 dagen</span></li>
-    <li><strong data-count="6.8" data-suffix="%">6.8%</strong><span data-i18n="stats.tiktokEng">TikTok engagement</span></li>
+    <li><strong data-count="102" data-suffix="K" data-stat="ig.views">102K</strong><span data-i18n="stats.igViews">Instagram weergaven · 90 dagen</span></li>
+    <li><strong data-count="45.9" data-suffix="K" data-stat="tt.views">45.9K</strong><span data-i18n="stats.tiktokViews">TikTok views · 60 dagen</span></li>
+    <li><strong data-count="6.8" data-suffix="%" data-stat="tt.eng">6.8%</strong><span data-i18n="stats.tiktokEng">TikTok engagement</span></li>
     <li><strong data-count="92.1" data-suffix="%">92.1%</strong><span data-i18n="stats.belgium">publiek uit België</span></li>
   </ul>
 </section>
@@ -446,24 +446,24 @@
       <header><h3>TikTok</h3><a href="https://www.tiktok.com/@emmyluna8" target="_blank" rel="noopener">@emmyluna8 ↗</a></header>
       <p class="stat-period" data-i18n="s.ttPeriod">Laatste 60 dagen · 26 aug – 24 okt</p>
       <dl>
-        <div><dt data-i18n="s.followers">Volgers</dt><dd>1.6K+</dd></div>
-        <div><dt data-i18n="s.views">Weergaven</dt><dd>45.9K</dd></div>
-        <div><dt data-i18n="s.viewers">Kijkers</dt><dd>29.7K <small>+66.9%</small></dd></div>
-        <div><dt data-i18n="s.newViewers">Nieuwe kijkers</dt><dd>26.9K <small>+238.5%</small></dd></div>
-        <div><dt data-i18n="s.eng">Engagement rate</dt><dd>6.8%</dd></div>
-        <div><dt>Likes · comments · shares</dt><dd>2.2K · 730 · 199</dd></div>
+        <div><dt data-i18n="s.followers">Volgers</dt><dd data-stat="tt.followers">1.6K+</dd></div>
+        <div><dt data-i18n="s.views">Weergaven</dt><dd data-stat="tt.views">45.9K</dd></div>
+        <div><dt data-i18n="s.viewers">Kijkers</dt><dd data-stat="tt.totalLikes">29.7K <small>+66.9%</small></dd></div>
+        <div><dt data-i18n="s.newViewers">Nieuwe kijkers</dt><dd data-stat="tt.videoCount">26.9K <small>+238.5%</small></dd></div>
+        <div><dt data-i18n="s.eng">Engagement rate</dt><dd data-stat="tt.eng">6.8%</dd></div>
+        <div><dt>Likes · comments · shares</dt><dd data-stat="tt.lcs">2.2K · 730 · 199</dd></div>
       </dl>
     </article>
     <article class="stat-card reveal">
       <header><h3>Instagram</h3><a href="https://www.instagram.com/emmy.luna" target="_blank" rel="noopener">@emmy.luna ↗</a></header>
       <p class="stat-period" data-i18n="s.igPeriod">Laatste 90 dagen</p>
       <dl>
-        <div><dt data-i18n="s.followers">Volgers</dt><dd>4.7K+</dd></div>
-        <div><dt data-i18n="s.views">Weergaven</dt><dd>102K</dd></div>
-        <div><dt data-i18n="s.viewers">Kijkers</dt><dd>19.5K</dd></div>
-        <div><dt data-i18n="s.nonfollow">Weergaven door niet-volgers</dt><dd>42.2%</dd></div>
-        <div><dt data-i18n="s.eng">Engagement rate</dt><dd>2.7%</dd></div>
-        <div><dt>Stories · Reels · posts</dt><dd>47.3 · 42.5 · 10.2%</dd></div>
+        <div><dt data-i18n="s.followers">Volgers</dt><dd data-stat="ig.followers">4.7K+</dd></div>
+        <div><dt data-i18n="s.views">Weergaven</dt><dd data-stat="ig.views">102K</dd></div>
+        <div><dt data-i18n="s.viewers">Kijkers</dt><dd data-stat="ig.reach">19.5K</dd></div>
+        <div><dt data-i18n="s.nonfollow">Weergaven door niet-volgers</dt><dd data-stat="ig.nonFollowers">42.2%</dd></div>
+        <div><dt data-i18n="s.eng">Engagement rate</dt><dd data-stat="ig.eng">2.7%</dd></div>
+        <div><dt>Stories · Reels · posts</dt><dd data-stat="ig.mix">47.3 · 42.5 · 10.2%</dd></div>
       </dl>
     </article>
   </div>
@@ -554,6 +554,7 @@
   <div class="footer-row">
     <span>© <span id="year">2026</span> Emmy Luna</span>
     <a href="https://drpbuildlab.com" class="footer-credit" target="_blank" rel="noopener">Built by <strong>DRP BuildLab</strong></a>
+    <span><a href="privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="terms.html" data-i18n="footer.terms">Voorwaarden</a></span>
     <a href="#" data-i18n="footer.top">Terug naar boven ↑</a>
   </div>
 </footer>
@@ -567,5 +568,6 @@
 
 <script src="assets/js/portfolio-data.js"></script>
 <script src="assets/js/main.js"></script>
+<script src="assets/js/live-stats.js"></script>
 </body>
 </html>

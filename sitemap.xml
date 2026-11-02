@@ -19,4 +19,12 @@
     <image:image><image:loc>https://emmyluna.be/assets/images/spa.jpg</image:loc></image:image>
     <image:image><image:loc>https://emmyluna.be/assets/images/pure-wine.jpg</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://emmyluna.be/privacy.html</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
+  <url>
+    <loc>https://emmyluna.be/terms.html</loc>
+    <lastmod>2026-11-03</lastmod>
+  </url>
 </urlset>

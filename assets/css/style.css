@@ -413,6 +413,7 @@ em { font-style: italic; }
 .stat-card header a:hover { color: var(--gold); }
 .stat-card dl { margin: 0; }
 .stat-card dl div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 0; border-top: 1px solid rgba(56,44,41,.1); }
+.stat-card dl div[hidden] { display: none; }
 .stat-card dt { color: var(--espresso-2); font-size: 14px; }
 .stat-card dd { margin: 0; font-family: var(--serif); font-size: 22px; font-weight: 500; text-align: right; }
 .stat-card dd small { font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--gold); margin-left: 6px; }
