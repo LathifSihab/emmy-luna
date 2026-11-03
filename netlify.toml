@@ -38,3 +38,10 @@
   to = "/404"
   status = 404
   force = true
+
+# TikTok verifies each URL (terms, privacy) as a prefix, so serve the signature file under any page
+[[redirects]]
+  from = "/:page/tiktokF5KHSLsnqbrxkuyOE7BQ8ajoo5PzOoCx.txt"
+  to = "/tiktokF5KHSLsnqbrxkuyOE7BQ8ajoo5PzOoCx.txt"
+  status = 200
+  force = true
