@@ -11,7 +11,8 @@ const TOTALS = ["views", "reach", "accounts_engaged", "total_interactions", "lik
 
 const redirectUri = env => env.PUBLIC_BASE_URL + "/auth/instagram/callback";
 
-// The permissions come from the login configuration (IG_CONFIG_ID), not a scope param
+// The permissions come from the login configuration (IG_CONFIG_ID), not a scope param.
+// prompt=login offers both Facebook and Instagram login instead of reusing the browser's Facebook session.
 export function authorizeUrl(env, state) {
   const u = new URL(`https://www.facebook.com/${API_VERSION}/dialog/oauth`);
   u.search = new URLSearchParams({
@@ -19,6 +20,7 @@ export function authorizeUrl(env, state) {
     config_id: env.IG_CONFIG_ID,
     redirect_uri: redirectUri(env),
     response_type: "code",
+    prompt: "login",
     state
   });
   return u.toString();
