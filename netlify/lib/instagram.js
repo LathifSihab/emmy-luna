@@ -1,24 +1,24 @@
-/* Instagram API with Instagram Login (graph.instagram.com) */
+/* Instagram API with Unified login (Facebook Login for Business, graph.facebook.com).
+   New Meta apps can't use Instagram Login (instagram.com/oauth) any more. */
 import { DAY, now, readJSON, writeJSON, pct } from "./util.js";
 
 const API_VERSION = "v26.0";
-const GRAPH = "https://graph.instagram.com";
-const SCOPES = "instagram_business_basic,instagram_business_manage_insights";
+const GRAPH = "https://graph.facebook.com/" + API_VERSION;
 const TOKEN_KEY = "tokens:instagram";
 const PERIOD_DAYS = 30; // longest since/until range the insights endpoint accepts
-const REFRESH_WHEN_LEFT = 15 * DAY;
 
 const TOTALS = ["views", "reach", "accounts_engaged", "total_interactions", "likes", "comments", "shares", "saves"];
 
 const redirectUri = env => env.PUBLIC_BASE_URL + "/auth/instagram/callback";
 
+// The permissions come from the login configuration (IG_CONFIG_ID), not a scope param
 export function authorizeUrl(env, state) {
-  const u = new URL("https://www.instagram.com/oauth/authorize");
+  const u = new URL(`https://www.facebook.com/${API_VERSION}/dialog/oauth`);
   u.search = new URLSearchParams({
     client_id: env.IG_APP_ID,
+    config_id: env.IG_CONFIG_ID,
     redirect_uri: redirectUri(env),
     response_type: "code",
-    scope: SCOPES,
     state
   });
   return u.toString();
@@ -35,57 +35,47 @@ async function igFetch(url, init, label) {
 }
 
 const get = (token, path, params, label) => {
-  const u = new URL(`${GRAPH}/${API_VERSION}/${path}`);
+  const u = new URL(`${GRAPH}/${path}`);
   u.search = new URLSearchParams({ ...params, access_token: token });
   return igFetch(u, {}, label);
 };
 
-async function saveToken(env, t, userId) {
-  await writeJSON(env, TOKEN_KEY, {
-    accessToken: t.access_token,
-    userId,
-    issuedAt: now(),
-    expiresAt: now() + (t.expires_in || 60 * DAY)
-  });
-}
-
+// The code becomes a business integration system user token; its expiry is set in the
+// login configuration (default: never), so there's no refresh step
 export async function handleCallback(env, code) {
-  const form = new URLSearchParams({
+  const u = new URL(GRAPH + "/oauth/access_token");
+  u.search = new URLSearchParams({
     client_id: env.IG_APP_ID,
     client_secret: env.IG_APP_SECRET,
-    grant_type: "authorization_code",
     redirect_uri: redirectUri(env),
     code
   });
-  const short = await igFetch("https://api.instagram.com/oauth/access_token", { method: "POST", body: form }, "code exchange");
-  const s = short.data?.[0] || short; // older responses wrap the token in data[]
+  const t = await igFetch(u, {}, "code exchange");
 
-  const u = new URL(GRAPH + "/access_token");
-  u.search = new URLSearchParams({ grant_type: "ig_exchange_token", client_secret: env.IG_APP_SECRET, access_token: s.access_token });
-  const long = await igFetch(u, {}, "long-lived token");
-  await saveToken(env, long, String(s.user_id));
+  const { data = [] } = await get(t.access_token, "me/assigned_instagram_accounts", { fields: "id,username" }, "account lookup");
+  if (!data.length) throw new Error("Instagram: no Instagram account was shared during login");
+
+  await writeJSON(env, TOKEN_KEY, {
+    accessToken: t.access_token,
+    userId: data[0].id,
+    username: data[0].username,
+    issuedAt: now(),
+    expiresAt: t.expires_in ? now() + t.expires_in : null
+  });
 }
 
-// Long-lived tokens last 60 days; refresh once fewer than 15 remain (must be >24h old)
 async function getToken(env) {
   const t = await readJSON(env, TOKEN_KEY);
   if (!t) throw new Error("Instagram not connected — visit /auth/instagram/start");
-  if (t.expiresAt < now()) throw new Error("Instagram token expired — reconnect via /auth/instagram/start");
-  if (t.expiresAt - now() < REFRESH_WHEN_LEFT && now() - t.issuedAt > DAY) {
-    const u = new URL(GRAPH + "/refresh_access_token");
-    u.search = new URLSearchParams({ grant_type: "ig_refresh_token", access_token: t.accessToken });
-    const fresh = await igFetch(u, {}, "token refresh");
-    await saveToken(env, fresh, t.userId);
-    return fresh.access_token;
-  }
-  return t.accessToken;
+  if (t.expiresAt && t.expiresAt < now()) throw new Error("Instagram token expired — reconnect via /auth/instagram/start");
+  return t;
 }
 
 // One request per metric: an unsupported metric shouldn't take the others down
-async function insight(token, metric, params) {
+async function insight(account, metric, params) {
   try {
     const label = params.breakdown ? metric + " by " + params.breakdown : metric;
-    const body = await get(token, "me/insights", { metric, period: "day", metric_type: "total_value", ...params }, label);
+    const body = await get(account.accessToken, account.userId + "/insights", { metric, period: "day", metric_type: "total_value", ...params }, label);
     return body.data?.[0]?.total_value ?? null;
   } catch (err) {
     console.error(err.message);
@@ -101,21 +91,21 @@ const breakdown = totalValue => {
 };
 
 export async function fetchStats(env) {
-  const token = await getToken(env);
-  const profile = await get(token, "me", { fields: "username,followers_count,media_count" }, "profile");
+  const account = await getToken(env);
+  const profile = await get(account.accessToken, account.userId, { fields: "username,followers_count,media_count" }, "profile");
 
   const until = now();
   const range = { since: until - PERIOD_DAYS * DAY, until };
   const lifetime = { period: "lifetime" };
 
   const [totals, byFollow, byType, age, gender, country] = await Promise.all([
-    Promise.all(TOTALS.map(m => insight(token, m, range))),
-    insight(token, "views", { ...range, breakdown: "follow_type" })
-      .then(v => v || insight(token, "views", { ...range, breakdown: "follower_type" })),
-    insight(token, "views", { ...range, breakdown: "media_product_type" }),
-    insight(token, "follower_demographics", { ...lifetime, breakdown: "age" }),
-    insight(token, "follower_demographics", { ...lifetime, breakdown: "gender" }),
-    insight(token, "follower_demographics", { ...lifetime, breakdown: "country" })
+    Promise.all(TOTALS.map(m => insight(account, m, range))),
+    insight(account, "views", { ...range, breakdown: "follow_type" })
+      .then(v => v || insight(account, "views", { ...range, breakdown: "follower_type" })),
+    insight(account, "views", { ...range, breakdown: "media_product_type" }),
+    insight(account, "follower_demographics", { ...lifetime, breakdown: "age" }),
+    insight(account, "follower_demographics", { ...lifetime, breakdown: "gender" }),
+    insight(account, "follower_demographics", { ...lifetime, breakdown: "country" })
   ]);
   const t = Object.fromEntries(TOTALS.map((m, i) => [m, totals[i]?.value ?? null]));
 

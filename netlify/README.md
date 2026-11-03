@@ -16,7 +16,8 @@ Netlify Functions that fetch Emmy's Instagram and TikTok stats every 3 hours and
 ## Setup
 
 1. **Environment variables:** Netlify → *emmy-luna* → Site configuration → Environment variables. Add these (or run `netlify env:set NAME value`):
-   - `IG_APP_ID`, `IG_APP_SECRET`: Meta app → Instagram → API setup with Instagram business login
+   - `IG_APP_ID`, `IG_APP_SECRET`: the Meta app ID and secret (App settings → Basic). New Meta apps only offer *API setup with Unified login*, so these are the Meta values, not a separate Instagram app ID.
+   - `IG_CONFIG_ID`: Use cases → Instagram API → API setup with Unified login → step 1, the configuration ID. The configuration needs `instagram_basic` and `instagram_manage_insights`, with a system-user token that never expires.
    - `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`: TikTok developer app
    - `ADMIN_KEY`: a long random string (already set). Read it with `netlify env:get ADMIN_KEY`.
    - `PUBLIC_BASE_URL` (optional): defaults to the site's primary URL. Set it only if the redirect URIs must stay on a different domain.
@@ -34,7 +35,7 @@ When emmyluna.be is connected to Netlify and set as the primary domain, the redi
 
 ## Maintenance
 
-- Tokens refresh automatically. The Instagram token lasts 60 days and is renewed when fewer than 15 remain. The TikTok access token lasts 24 hours, and its refresh token about a year. If a refresh fails, the previous data stays live.
+- The Instagram token is a system-user token whose expiry comes from the login configuration (never, by default), so it isn't refreshed. If the configuration sets an expiry, reconnect before it runs out. The TikTok access token lasts 24 hours, and its refresh token about a year. If a refresh fails, the previous data stays live.
 - If a platform stops updating, run `curl -X POST "https://emmy-luna.netlify.app/refresh?key=<ADMIN_KEY>"` to see the error. If it says "reconnect", repeat step 4 for that platform.
 - Logs: Netlify → *emmy-luna* → Logs → Functions. Tokens are never logged.
 - Bump `API_VERSION` in `lib/instagram.js` when Meta retires the current Graph API version.

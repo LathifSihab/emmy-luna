@@ -12,6 +12,7 @@ export function getEnv() {
   return {
     IG_APP_ID: get("IG_APP_ID"),
     IG_APP_SECRET: get("IG_APP_SECRET"),
+    IG_CONFIG_ID: get("IG_CONFIG_ID"),
     TIKTOK_CLIENT_KEY: get("TIKTOK_CLIENT_KEY"),
     TIKTOK_CLIENT_SECRET: get("TIKTOK_CLIENT_SECRET"),
     ADMIN_KEY: get("ADMIN_KEY"),
