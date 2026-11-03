@@ -242,15 +242,16 @@
 
   /* ---------- Brands ---------- */
   const brands = window.BRANDS || [];
+  const brandLink = (b, inner) => b.url ? '<a href="' + b.url + '" target="_blank" rel="noopener">' + inner + "</a>" : inner;
   brands.filter(b => b.featured).forEach(b => {
     const li = document.createElement("li");
-    li.innerHTML = b.logo ? '<img src="' + b.logo + '" alt="' + b.name + '" loading="lazy">' : "<span>" + b.name + "</span>";
+    li.innerHTML = brandLink(b, b.logo ? '<img src="' + b.logo + '" alt="' + b.name + '" loading="lazy">' : "<span>" + b.name + "</span>");
     $("#brandLogos").appendChild(li);
   });
   $("#brandList").innerHTML = brands
-    .map(b => b.name)
-    .sort((a, b) => a.localeCompare(b, "nl", { sensitivity: "base" }))
-    .map(n => "<li>" + n + "</li>").join("");
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name, "nl", { sensitivity: "base" }))
+    .map(b => "<li>" + brandLink(b, b.name) + "</li>").join("");
   $("#brandCount").textContent = brands.length;
 
   /* ---------- Lightbox (mp4, TikTok, Instagram, or image) ---------- */

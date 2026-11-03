@@ -55,17 +55,18 @@ window.PORTFOLIO = [
      featured : true = shown large in the logo row
      logo     : (optional) path to a logo file, e.g. "assets/images/logos/huggies.svg"
                 Transparent SVG or PNG, about 300px wide, in the colour you want shown.
+     url      : (optional) the brand's website; the name becomes a link (opens in a new tab)
    ========================================================= */
 
 window.BRANDS = [
-  { name: "Huggies",             featured: true, logo: "" },
-  { name: "HiPP",                featured: true, logo: "" },
-  { name: "SPA",                 featured: true, logo: "" },
-  { name: "Colmar",              featured: true, logo: "" },
-  { name: "Maxistock Leuven",    featured: true, logo: "" },
-  { name: "Dermocreme",          featured: true, logo: "" },
-  { name: "Born Rosé Barcelona", featured: true, logo: "" },
-  { name: "Wondr",               featured: true, logo: "" },
+  { name: "Huggies",             featured: true, logo: "", url: "https://www.huggies.be/" },
+  { name: "HiPP",                featured: true, logo: "", url: "https://www.hipp.be/" },
+  { name: "SPA",                 featured: true, logo: "", url: "https://spa.be/" },
+  { name: "Colmar",              featured: true, logo: "", url: "https://colmar.be/nl/" },
+  { name: "Maxistock Leuven",    featured: true, logo: "", url: "" },
+  { name: "Dermocrem",           featured: true, logo: "", url: "https://dermocrem.be/" },
+  { name: "Born Rosé Barcelona", featured: true, logo: "", url: "https://www.bornrose.com/" },
+  { name: "Wondr",               featured: true, logo: "", url: "https://www.wondr.be/" },
 
   { name: "Afslankhuys" },
   { name: "Aurenna Nail Studio" },
