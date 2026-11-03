@@ -45,3 +45,9 @@
   to = "/tiktokF5KHSLsnqbrxkuyOE7BQ8ajoo5PzOoCx.txt"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/:page/tiktokbdVXbPK4F2LQTlMPylMyiNUBAlR054vw.txt"
+  to = "/tiktokbdVXbPK4F2LQTlMPylMyiNUBAlR054vw.txt"
+  status = 200
+  force = true
