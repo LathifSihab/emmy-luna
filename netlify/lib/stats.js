@@ -1,11 +1,13 @@
 /* Fetches every platform and stores the combined result as stats.json */
 import * as instagram from "./instagram.js";
 import * as tiktok from "./tiktok.js";
+import { purgeCache } from "@netlify/functions";
 import { readJSON, writeJSON } from "./util.js";
 
 export const PLATFORMS = { instagram, tiktok };
 export const LABELS = { instagram: "Instagram", tiktok: "TikTok" };
 export const STATS_KEY = "stats";
+export const STATS_CACHE_TAG = "stats";
 
 // A failed platform keeps its last good data; per-platform updatedAt shows its age
 export async function refreshAll(env) {
@@ -24,5 +26,7 @@ export async function refreshAll(env) {
     }
   }));
   await writeJSON(env, STATS_KEY, next);
+  // Visitors still get the browser's own copy for up to max-age (10 min)
+  await purgeCache({ tags: [STATS_CACHE_TAG] }).catch(err => console.error("Cache purge: " + err.message));
   return report;
 }
