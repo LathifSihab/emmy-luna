@@ -15,6 +15,8 @@ export function getEnv() {
     IG_CONFIG_ID: get("IG_CONFIG_ID"),
     TIKTOK_CLIENT_KEY: get("TIKTOK_CLIENT_KEY"),
     TIKTOK_CLIENT_SECRET: get("TIKTOK_CLIENT_SECRET"),
+    TIKTOK_BIZ_APP_ID: get("TIKTOK_BIZ_APP_ID"),
+    TIKTOK_BIZ_APP_SECRET: get("TIKTOK_BIZ_APP_SECRET"),
     ADMIN_KEY: get("ADMIN_KEY"),
     PUBLIC_BASE_URL: (get("PUBLIC_BASE_URL") || get("URL")).replace(/\/$/, ""),
     store: getStore({ name: "social-stats", consistency: "strong" })

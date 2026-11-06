@@ -19,7 +19,7 @@ export default async (request, context) => {
     return page("Link expired", "This login link is invalid or expired. Start again from the setup link.", 400);
   }
   const denied = url.searchParams.get("error_description") || url.searchParams.get("error");
-  const code = url.searchParams.get("code");
+  const code = url.searchParams.get("code") || url.searchParams.get("auth_code");
   if (denied || !code) return page(`${label} not connected`, denied || "No authorization code received.", 400);
 
   try {
@@ -32,4 +32,5 @@ export default async (request, context) => {
   return page(`${label} connected ✓`, "Thanks! The website stats will update within a few minutes. You can close this page.");
 };
 
-export const config = { path: "/auth/:platform/:step", method: "GET" };
+// TikTok for Business requires redirect URLs ending in "/"
+export const config = { path: ["/auth/:platform/:step", "/auth/:platform/:step/"], method: "GET" };

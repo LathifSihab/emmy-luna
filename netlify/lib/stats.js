@@ -1,11 +1,13 @@
 /* Fetches every platform and stores the combined result as stats.json */
 import * as instagram from "./instagram.js";
 import * as tiktok from "./tiktok.js";
+import * as tiktokBusiness from "./tiktok-business.js";
 import { purgeCache } from "@netlify/functions";
 import { readJSON, writeJSON } from "./util.js";
 
-export const PLATFORMS = { instagram, tiktok };
-export const LABELS = { instagram: "Instagram", tiktok: "TikTok" };
+// Keys double as the /auth/:platform/ path segment and the stats.json key
+export const PLATFORMS = { instagram, tiktok, "tiktok-business": tiktokBusiness };
+export const LABELS = { instagram: "Instagram", tiktok: "TikTok", "tiktok-business": "TikTok audience" };
 export const STATS_KEY = "stats";
 export const STATS_CACHE_TAG = "stats";
 

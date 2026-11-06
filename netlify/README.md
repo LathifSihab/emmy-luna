@@ -9,7 +9,8 @@ Netlify Functions that fetch Emmy's Instagram and TikTok stats every 3 hours and
 | `GET /stats.json` | Public stats, cached 10 min |
 | `GET /auth/instagram/start?key=ADMIN_KEY` | Sends Emmy to Instagram login (one-time) |
 | `GET /auth/tiktok/start?key=ADMIN_KEY` | Sends Emmy to TikTok login (one-time) |
-| `GET /auth/{instagram,tiktok}/callback` | OAuth redirect URIs (register these in the developer apps) |
+| `GET /auth/tiktok-business/start?key=ADMIN_KEY` | Sends Emmy to TikTok login for follower demographics (one-time) |
+| `GET /auth/{instagram,tiktok,tiktok-business}/callback` | OAuth redirect URIs (register these in the developer apps) |
 | `POST /refresh?key=ADMIN_KEY` | Fetch now instead of waiting for the schedule; returns `ok` or the error per platform |
 | `scheduled-refresh` | Runs every 3 hours |
 
@@ -19,15 +20,18 @@ Netlify Functions that fetch Emmy's Instagram and TikTok stats every 3 hours and
    - `IG_APP_ID`, `IG_APP_SECRET`: the Meta app ID and secret (App settings → Basic). New Meta apps only offer *API setup with Unified login*, so these are the Meta values, not a separate Instagram app ID.
    - `IG_CONFIG_ID`: Use cases → Instagram API → API setup with Unified login → step 1, the configuration ID. The configuration needs `instagram_basic` and `instagram_manage_insights`, with a system-user token that never expires.
    - `TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`: TikTok developer app
+   - `TIKTOK_BIZ_APP_ID`, `TIKTOK_BIZ_APP_SECRET`: TikTok API for Business app (business-api.tiktok.com → My Apps), with the TikTok accounts scopes *Get account user basic info* and *Get account user insights*. Demographics need 100+ followers and lag 24–48h.
    - `ADMIN_KEY`: a long random string (already set). Read it with `netlify env:get ADMIN_KEY`.
    - `PUBLIC_BASE_URL` (optional): defaults to the site's primary URL. Set it only if the redirect URIs must stay on a different domain.
 2. **Redeploy** after changing a variable. Functions only see the values from their deploy (push to `main`, or Deploys → *Trigger deploy*).
 3. **Redirect URIs:** register these exactly in the developer apps:
    - Instagram: `https://emmy-luna.netlify.app/auth/instagram/callback`
    - TikTok: `https://emmy-luna.netlify.app/auth/tiktok/callback`
+   - TikTok for Business (*TikTok account holder redirect URL*, must end with `/`): `https://emmy-luna.netlify.app/auth/tiktok-business/callback/`
 4. **Connect the accounts (once):** Emmy opens each link while logged in to her account and approves access:
    - `https://emmy-luna.netlify.app/auth/instagram/start?key=<ADMIN_KEY>`
    - `https://emmy-luna.netlify.app/auth/tiktok/start?key=<ADMIN_KEY>`
+   - `https://emmy-luna.netlify.app/auth/tiktok-business/start?key=<ADMIN_KEY>`
 
    Each callback page confirms the connection and triggers a first fetch. Check the result at `/stats.json` (cached for up to 10 minutes).
 

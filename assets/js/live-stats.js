@@ -86,6 +86,54 @@
       "Last " + n + " days · updated " + date(i.updatedAt, "en-GB"));
   }
 
+  /* ---------- Audience (TikTok followers) ---------- */
+  const GENDERS = [
+    ["Female", "s.female", "Vrouw", "Female"],
+    ["Male", "s.male", "Man", "Male"],
+    ["Other", "s.otherGender", "Anders", "Other"]
+  ];
+  const AGES = ["18-24", "25-34", "35-44", "45-54", "55+"];
+  const TOP_COUNTRIES = 2;
+
+  const region = (code, locale) => {
+    try { return new Intl.DisplayNames([locale], { type: "region" }).of(code); } catch (e) { return code; }
+  };
+
+  // rows: [{ value, text }] or [{ value, key, nl, en }] for labels that follow the language switch
+  function bars(name, rows) {
+    const list = $('[data-audience="' + name + '"]');
+    if (!list || !rows.length) return;
+    list.innerHTML = "";
+    rows.forEach(r => {
+      const li = document.createElement("li"), span = document.createElement("span"), b = document.createElement("b");
+      li.style.setProperty("--v", r.value + "%");
+      b.textContent = percent(r.value) + "%";
+      li.append(span, b);
+      if (r.key) label(span, r.key, r.nl, r.en); else span.textContent = r.text;
+      list.appendChild(li);
+    });
+  }
+
+  function renderAudience(a) {
+    const { gender, age, country } = a.audience || {};
+    if (gender) bars("gender", GENDERS.filter(g => num(gender[g[0]]))
+      .map(([k, key, nl, en]) => ({ value: gender[k], key, nl, en })));
+    if (age) bars("age", AGES.filter(k => num(age[k])).map(k => ({ value: age[k], text: k.replace("-", "–") })));
+    if (country) {
+      const top = Object.entries(country).sort((x, y) => y[1] - x[1]).slice(0, TOP_COUNTRIES);
+      const rest = Math.round((100 - top.reduce((s, [, v]) => s + v, 0)) * 10) / 10;
+      const rows = top.map(([code, value]) =>
+        ({ value, key: "s.country." + code, nl: region(code, "nl-BE"), en: region(code, "en-GB") }));
+      if (rest > 0) rows.push({ value: rest, key: "s.otherLoc", nl: "Overig", en: "Other" });
+      bars("country", rows);
+      put("tta.be", num(country.BE) ? percent(country.BE) + "%" : null,
+        num(country.BE) && { count: percent(country.BE), suffix: "%" });
+    }
+    if (a.updatedAt) label($('[data-i18n="s.audienceSrc"]'), "s.audienceLive",
+      "TikTok-volgers · bijgewerkt " + date(a.updatedAt, "nl-BE"),
+      "TikTok followers · updated " + date(a.updatedAt, "en-GB"));
+  }
+
   /* ---------- Fetch ---------- */
   if (!window.fetch) return;
   const ctrl = "AbortController" in window ? new AbortController() : null;
@@ -97,6 +145,7 @@
       // render each platform on its own so one bad payload can't blank the other
       if (data.tiktok) try { renderTikTok(data.tiktok); } catch (e) {}
       if (data.instagram) try { renderInstagram(data.instagram); } catch (e) {}
+      if (data["tiktok-business"]) try { renderAudience(data["tiktok-business"]); } catch (e) {}
     })
     .catch(() => { /* keep the hardcoded numbers */ })
     .finally(() => clearTimeout(timer));
