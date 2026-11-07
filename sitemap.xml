@@ -2,29 +2,29 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://emmyluna.be/</loc>
+    <loc>https://emmy-luna.netlify.app/</loc>
     <lastmod>2026-10-26</lastmod>
-    <image:image><image:loc>https://emmyluna.be/assets/images/emmy-portrait.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/egypt-dress.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/hat-water.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/belvedere.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/sculpted-heel.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/brownie-box.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/pampas-rodizio.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/housewine.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/aurenna-nails.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/binqcare.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/swubie.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/smossie.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/spa.jpg</image:loc></image:image>
-    <image:image><image:loc>https://emmyluna.be/assets/images/pure-wine.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/emmy-portrait.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/egypt-dress.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/hat-water.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/belvedere.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/sculpted-heel.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/brownie-box.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/pampas-rodizio.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/housewine.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/aurenna-nails.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/binqcare.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/swubie.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/smossie.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/spa.jpg</image:loc></image:image>
+    <image:image><image:loc>https://emmy-luna.netlify.app/assets/images/pure-wine.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://emmyluna.be/privacy.html</loc>
+    <loc>https://emmy-luna.netlify.app/privacy.html</loc>
     <lastmod>2026-11-03</lastmod>
   </url>
   <url>
-    <loc>https://emmyluna.be/terms.html</loc>
+    <loc>https://emmy-luna.netlify.app/terms.html</loc>
     <lastmod>2026-11-03</lastmod>
   </url>
 </urlset>

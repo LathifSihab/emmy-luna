@@ -2,7 +2,7 @@
 
 > Emmy Luna is a Belgian UGC (user-generated content) creator and lifestyle content creator. She makes short-form video — UGC videos, Instagram Reels, TikToks and stories — for brands in beauty, food, lifestyle, fashion, home, travel and motherhood. Her style is natural, creative and detail-oriented, with a premium finish. Motto: "Follow your inner moonlight; don't hide the madness."
 
-The website is in Dutch (nl-BE) with an English version. Everything below is also on https://emmyluna.be/.
+The website is in Dutch (nl-BE) with an English version. Everything below is also on https://emmy-luna.netlify.app/.
 
 ## About
 
@@ -73,7 +73,7 @@ Paid advertising, extended buy-out, raw footage and exclusivity are not included
 
 ## Links
 
-- [Website (Dutch / English)](https://emmyluna.be/)
-- [Portfolio](https://emmyluna.be/#portfolio)
-- [Services & rates](https://emmyluna.be/#services)
-- [Contact](https://emmyluna.be/#contact)
+- [Website (Dutch / English)](https://emmy-luna.netlify.app/)
+- [Portfolio](https://emmy-luna.netlify.app/#portfolio)
+- [Services & rates](https://emmy-luna.netlify.app/#services)
+- [Contact](https://emmy-luna.netlify.app/#contact)
