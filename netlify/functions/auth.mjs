@@ -1,14 +1,15 @@
-/* GET /auth/{instagram,tiktok}/{start,callback}: one-time account connection */
+/* GET /auth/{instagram,tiktok,tiktok-business}/{start,callback}: one-time account connection */
 import { getEnv, page, isAdmin, createState, consumeState } from "../lib/util.js";
 import { PLATFORMS, LABELS, refreshAll } from "../lib/stats.js";
 
-export default async (request, context) => {
-  const { platform: name, step } = context.params;
+export default async request => {
+  const url = new URL(request.url);
+  // Parsed here: context.params comes out wrong for "/callback/?code=…" (trailing slash plus query)
+  const [, name, step] = url.pathname.match(/^\/auth\/([^/]+)\/([^/]+)\/?$/) || [];
   const platform = PLATFORMS[name], label = LABELS[name];
   if (!platform || !["start", "callback"].includes(step)) return new Response("Not found", { status: 404 });
 
   const env = getEnv();
-  const url = new URL(request.url);
 
   if (step === "start") {
     if (!isAdmin(url, env)) return page("Forbidden", "Missing or wrong key.", 403);
