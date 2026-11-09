@@ -2,7 +2,7 @@
 import { getEnv, page, isAdmin, createState, consumeState } from "../lib/util.js";
 import { PLATFORMS, LABELS, refreshAll } from "../lib/stats.js";
 
-export default async request => {
+export default async (request, context) => {
   const url = new URL(request.url);
   // Parsed here: context.params comes out wrong for "/callback/?code=…" (trailing slash plus query)
   const [, name, step] = url.pathname.match(/^\/auth\/([^/]+)\/([^/]+)\/?$/) || [];
