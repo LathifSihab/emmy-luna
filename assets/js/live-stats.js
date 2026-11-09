@@ -120,7 +120,9 @@
       .map(([k, key, nl, en]) => ({ value: gender[k], key, nl, en })));
     if (age) bars("age", AGES.filter(k => num(age[k])).map(k => ({ value: age[k], text: k.replace("-", "–") })));
     if (country) {
-      const top = Object.entries(country).sort((x, y) => y[1] - x[1]).slice(0, TOP_COUNTRIES);
+      // TikTok adds an "Others" bucket next to the ISO country codes; it ends up in the remainder row
+      const top = Object.entries(country).filter(([code]) => /^[A-Z]{2}$/.test(code))
+        .sort((x, y) => y[1] - x[1]).slice(0, TOP_COUNTRIES);
       const rest = Math.round((100 - top.reduce((s, [, v]) => s + v, 0)) * 10) / 10;
       const rows = top.map(([code, value]) =>
         ({ value, key: "s.country." + code, nl: region(code, "nl-BE"), en: region(code, "en-GB") }));
